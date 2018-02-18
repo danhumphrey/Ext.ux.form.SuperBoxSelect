@@ -1,0 +1,591 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>Ext.ux.form.SuperBoxSelect Examples</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/obsidian.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/extjs/3.4.1-1/resources/css/ext-all.css" media="screen"
+          rel="Stylesheet" type="text/css"/>
+    <link href="super-box-select.css" media="screen"
+          rel="Stylesheet" type="text/css"/>
+    <style type="text/css">
+
+        body {
+            font-family: Roboto;
+            padding: 0px 80px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        p {
+            margin-bottom: 0.7em;
+        }
+
+        h1 {
+            font-size: 2em;
+            border-bottom: 1px solid #eaecef;
+            margin: 0.67em 0;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin: 0.37em 0;
+        }
+
+        h1:first-of-type {
+            margin-top: 0.2em;
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        .demo {
+            margin: 1.4em 0;
+        }
+
+        .x-tag {
+            color: #693;
+            background-image: url(tag_green.gif);
+            background-repeat: no-repeat;
+            background-position:  2px center;
+            padding-left: 17px !important;
+            *text-indent: 17px !important;
+        }
+        .x-flag{
+            background-image: url(https://cdnjs.cloudflare.com/ajax/libs/extjs/3.4.1-1/resources/images/default/s.gif);
+            background-repeat: no-repeat;
+            background-position:  2px center;
+            text-indent: 17px !important;
+        }
+
+        .x-flag-au{
+            background-image: url("flags/Australia.png");
+
+        }
+        .x-flag-at{
+            background-image: url("flags/Austria.png");
+        }
+        .x-flag-ca{
+            background-image: url("flags/Canada.png");
+        }
+        .x-flag-fr{
+            background-image: url("flags/France.png");
+        }
+        .x-flag-it{
+            background-image: url("flags/Italy.png");
+        }
+        .x-flag-jp{
+            background-image: url("flags/Japan.png");
+        }
+        .x-flag-nz{
+            background-image: url("flags/New Zealand.png");
+        }
+        .x-flag-us{
+            background-image: url("flags/USA.png");
+        }
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/extjs/3.4.1-1/adapter/ext/ext-base-debug.js"
+            type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/extjs/3.4.1-1/ext-all-debug.js" type="text/javascript"></script>
+    <script type="text/javascript" src="states.js"></script>
+    <script type="text/javascript" src="super-box-select.js"></script>
+    <script type="text/javascript">
+      Ext.onReady(function() {
+
+        Ext.QuickTips.init();
+
+        var states = new Ext.data.SimpleStore({
+          fields: ['abbr', 'state', 'nick', 'cls'],
+          data: Ext.exampledata.states,
+          sortInfo: {field: 'state', direction: 'ASC'}
+        });
+
+        var form1 = new Ext.form.FormPanel({
+          id:'f1Form',
+          renderTo: 'f1',
+          title:'Base Functionality',
+          autoHeight: true,
+          bodyStyle: 'padding:50px;',
+          width: 700,
+          items: [new Ext.ux.form.SuperBoxSelect({
+            id:'selector1',
+            fieldLabel: 'US States',
+            emptyText: 'Select some US States',
+            resizable: true,
+            name: 'states',
+            anchor:'100%',
+            store: states,
+            mode: 'local',
+            displayField: 'state',
+            displayFieldTpl: '{state} ({abbr})',
+            valueField: 'abbr',
+            value: 'CA,NY',
+            forceSelection : true
+          })],
+          buttons: [{
+            text: "setValue('AK,NY,CO')",
+            scope: this,
+            handler: function(){
+              Ext.getCmp('selector1').setValue('AK,NY,CO');
+            }
+          },{
+            text: 'getValue()',
+            scope: this,
+            handler: function(){
+              console.log(Ext.getCmp('selector1').getValue());
+            }
+          }, {
+            text: 'BasicForm.getValues()',
+            scope: this,
+            handler: function(){
+              console.log(form1.getForm().getValues(true));
+            }
+          },{
+            text: "reset",
+            scope: this,
+            handler: function(){
+              Ext.getCmp('selector1').reset();
+            }
+          },{
+            text: "disable",
+            scope: this,
+            handler: function(){
+              Ext.getCmp('selector1').disable();
+            }
+          },{
+            text: "enable",
+            scope: this,
+            handler: function(){
+              Ext.getCmp('selector1').enable();
+            }
+          }]
+        });
+
+        var tagStore = new Ext.data.SimpleStore({
+          fields: ['id', 'name'],
+          data: [['Architecture','Architecture'],['Sport','Sport'],['Science','Science'],['Nature','Nature'],['Technology','Technology'],['Travel','Travel']],
+          sortInfo: {field: 'name', direction: 'ASC'}
+        });
+
+        var form2 = new Ext.form.FormPanel({
+          id:'f2Form',
+          renderTo: 'f2',
+          title:'Allowing New Data',
+          autoHeight: true,
+          bodyStyle: 'padding:50px;',
+          width: 700,
+          items: [new Ext.ux.form.SuperBoxSelect({
+            msgTarget: 'under',
+            allowAddNewData: true,
+            id:'selector2',
+            fieldLabel: 'Tags',
+            emptyText: 'Enter or select the category tags',
+            resizable: true,
+            name: 'tags',
+            anchor:'100%',
+            store: tagStore,
+            mode: 'local',
+            displayField: 'name',
+            valueField: 'id',
+            extraItemCls: 'x-tag',
+            listeners: {
+              newitem: function(comp,v){
+                v = v+'';
+                v = v.slice(0,1).toUpperCase() + v.slice(1).toLowerCase();
+                var newObj = {
+                  id: v,
+                  name: v
+                };
+                comp.addItem(newObj);
+              }
+            }
+          })],
+          buttons: [{
+            text: "Add Existing Tag (addItem)",
+            scope: this,
+            handler: function(){
+              Ext.getCmp('selector2').addItem({id:'Travel', name:'Travel'});
+            }
+          },{
+            text: "Add New Tag (addItem)",
+            scope: this,
+            handler: function(){
+              Ext.getCmp('selector2').addItem({id:'Beauty', name:'Beauty'});
+            }
+          },{
+            text: "Set New Values (setValueEx)",
+            scope: this,
+            handler: function(){
+              Ext.getCmp('selector2').setValueEx([{id:'Finance', name:'Finance'},{id:'Gardening', name:'Gardening'}]);
+            }
+          },{
+            text: 'getValue()',
+            scope: this,
+            handler: function(){
+              console.log(Ext.getCmp('selector2').getValue());
+            }
+          },{
+            text: "reset",
+            scope: this,
+            handler: function(){
+              Ext.getCmp('selector2').reset();
+            }
+          }]
+        });
+
+
+        var countryData = [
+          ['AU', 'Australia','x-flag-au','font-style:italic'],
+          ['AT', 'Austria', 'x-flag-at',''],
+          ['CA', 'Canada', 'x-flag-ca',''],
+          ['FR', 'France', 'x-flag-fr',''],
+          ['IT', 'Italy', 'x-flag-it',''],
+          ['JP', 'Japan', 'x-flag-jp',''],
+          ['NZ', 'New Zealand', 'x-flag-nz',''],
+          ['US', 'USA', 'x-flag-us','']
+        ];
+
+        var countryStore = new Ext.data.SimpleStore({
+          fields: ['code', 'name', 'cls', 'style'],
+          data: countryData,
+          sortInfo: {field: 'name', direction: 'ASC'}
+        });
+
+        var form3 = new Ext.form.FormPanel({
+          id:'f3Form',
+          renderTo: 'f3',
+          title:'Extra Functionality',
+          autoHeight: true,
+          bodyStyle: 'padding:50px;',
+          width: 700,
+          items: [new Ext.ux.form.SuperBoxSelect({
+            allowBlank:false,
+            msgTarget: 'side',
+            renderFieldBtns:false,
+            id:'selector3',
+            fieldLabel: 'Countries',
+            resizable: true,
+            name: 'countries',
+            anchor:'100%',
+            store: countryStore,
+            mode: 'local',
+            displayField: 'name',
+            valueField: 'code',
+            classField: 'cls',
+            styleField: 'style',
+            extraItemCls: 'x-flag',
+            extraItemStyle: 'border-width:2px',
+            stackItems: true,
+            value: 'AU'
+          })],
+          buttons: [{
+            text: "Add Australia (addItem)",
+            scope: this,
+            handler: function(){
+              Ext.getCmp('selector3').addItem({code:'AU'});
+            }
+          },{
+            text: 'getValue()',
+            scope: this,
+            handler: function(){
+              console.log(Ext.getCmp('selector3').getValue());
+            }
+          }, {
+            text: 'BasicForm.getValues()',
+            scope: this,
+            handler: function(){
+              console.log(form3.getForm().getValues(true));
+            }
+          },{
+            text: "reset",
+            scope: this,
+            handler: function(){
+              Ext.getCmp('selector3').reset();
+            }
+          }]
+        });
+
+        /*
+        var states2 = new Ext.data.SimpleStore({
+          fields: ['abbr', 'state', 'nick', 'cls'],
+          data: Ext.exampledata.states,
+          sortInfo: {field: 'state', direction: 'ASC'}
+        });
+
+        var form4 = new Ext.form.FormPanel({
+          id:'f4Form',
+          renderTo: 'f4',
+          title:'Prevent TAB key navigation',
+          autoHeight: true,
+          bodyStyle: 'padding:50px;',
+          width: 700,
+          items: [{
+            allowBlank:false,
+            msgTarget: 'title',
+            id:'selector4',
+            xtype:'superboxselect',
+            fieldLabel: 'States',
+            resizable: true,
+            name: 'states2',
+            anchor:'100%',
+            store: states2,
+            mode: 'local',
+            displayField: 'state',
+            displayFieldTpl: '{state} ({abbr})',
+            valueField: 'abbr',
+            navigateItemsWithTab: false
+          }
+          ],
+          buttons: [{
+            text: "setValue('AK,NY,CO')",
+            scope: this,
+            handler: function(){
+              Ext.getCmp('selector4').setValue('AK,NY,CO');
+            }
+          },{
+            text: 'getValue()',
+            scope: this,
+            handler: function(){
+              alert(Ext.getCmp('selector4').getValue());
+            }
+          }, {
+            text: 'BasicForm.getValues()',
+            scope: this,
+            handler: function(){
+              var v = form4.getForm().getValues(true);
+              alert(v);
+            }
+          },{
+            text: "reset",
+            scope: this,
+            handler: function(){
+              Ext.getCmp('selector4').reset();
+            }
+          }]
+        });
+
+        //example 5
+
+        var states3 = new Ext.data.SimpleStore({
+          fields: ['abbr', 'state', 'nick', 'cls'],
+          data: Ext.exampledata.states,
+          sortInfo: {field: 'state', direction: 'ASC'}
+        });
+
+        new Ext.ux.form.SuperBoxSelect({
+          applyTo: 'f5-sbs',
+          allowBlank:false,
+          msgTarget: 'title',
+          id:'selector5',
+          xtype:'superboxselect',
+          fieldLabel: 'States',
+          resizable: true,
+          name: 'states3',
+          width:300,
+          store: states3,
+          mode: 'local',
+          displayField: 'state',
+          displayFieldTpl: '{state} ({abbr})',
+          valueField: 'abbr',
+          navigateItemsWithTab: false
+        });
+
+        //example 6
+        new Ext.ux.form.SuperBoxSelect({
+          transform: 'f6-sbs',
+          allowBlank:false,
+          msgTarget: 'title',
+          id:'selector6',
+          fieldLabel: 'States',
+          resizable: true,
+          name: 'countries2',
+          width:200,
+          displayField: 'text',
+          valueField: 'value',
+          classField: 'cls',
+          styleField: 'style',
+          extraItemCls: 'x-flag',
+          extraItemStyle: 'border-width:2px',
+          stackItems: true
+        });
+        */
+
+      });
+    </script>
+
+</head>
+<body>
+
+<a href="https://github.com/danhumphrey/Ext.ux.ButtonIconMenu"><img
+        style="position: absolute; top: 0; right: 0; border: 0;"
+        src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67"
+        alt="Fork me on GitHub"
+        data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+<h1>Ext.ux.form.SuperBoxSelect</h1>
+<p>SuperBoxSelect is an extension of the ComboBox component which displays selected items as labelled boxes within the form field.</p>
+<hr>
+<h2>Example 1</h2>
+<p>This example demonstrates the base functionality of auto-completion and multi-select capabilities.</p>
+<p>We're using a data store containing US States and have configured the <code>displayFieldTpl</code> config to show the state and abbreviation in selected items.</p>
+<p>Notice that the selected items can be navigated (and deleted) with the keyboard - the <kbd>DOWN</kbd> arrow will display the select list.</p>
+<p>The buttons below the form show an example of interacting with the component programmatically (see the browser console for output).</p>
+<div id="f1" class="demo"></div>
+<p>The following code was used to create this example:</p>
+    <pre>
+      <code class="javascript">
+        new Ext.ux.form.SuperBoxSelect({
+            id:'selector1',
+            fieldLabel: 'US States',
+            emptyText: 'Select some US States',
+            resizable: true,
+            name: 'states',
+            anchor:'100%',
+            store: states,
+            mode: 'local',
+            displayField: 'state',
+            displayFieldTpl: '{state} ({abbr})',
+            valueField: 'abbr',
+            value: 'CA,NY',
+            forceSelection : true
+        })
+      </code>
+    </pre>
+
+
+<h2>Example 2</h2>
+<p>This example demonstrates the allowNewData config, which allows new item values to be added - type a new tag and hit <kbd>ENTER</kbd>.</p>
+<p>The developer has full control over new items as values are first sent to a callback function via the <code>newitem</code> event (as shown in the source code) - in this example we use the callback to capitalize the first letter of the tag value.</p>
+<p>The <code>extraItemCls</code> config property is also used in this example, and enables additional styling of the selected items - in this instance, it applies the tag icon to selected items and colours the item text green.</p>
+<div id="f2" class="demo"></div>
+<p>The following code was used to create this example:</p>
+<pre>
+      <code class="javascript">
+        new Ext.ux.form.SuperBoxSelect({
+            msgTarget: 'under',
+            allowAddNewData: true,
+            id:'selector2',
+            fieldLabel: 'Tags',
+            emptyText: 'Enter or select the category tags',
+            resizable: true,
+            name: 'tags',
+            anchor:'100%',
+            store: tagStore,
+            mode: 'local',
+            displayField: 'name',
+            valueField: 'id',
+            extraItemCls: 'x-tag',
+            listeners: {
+              newitem: function(comp,v){
+                v = v+'';
+                v = v.slice(0,1).toUpperCase() + v.slice(1).toLowerCase();
+                var newObj = {
+                  id: v,
+                  name: v
+                };
+                comp.addItem(newObj);
+              }
+            }
+        })
+      </code>
+      <code class="css">
+        .x-tag {
+            color: #693;
+            background-image: url(tag_green.gif);
+            background-repeat: no-repeat;
+            background-position:  2px center;
+            padding-left: 17px !important;
+            *text-indent: 17px !important;
+        }
+      </code>
+    </pre>
+<h2>Example 3</h2>
+<p>This example demonstrates the <code>stackItems</code> config, which forces the selected items to be rendered as vertically stacked items.</p>
+<p>The per item styling capabilities are demonstrated by the use of the <code>classField</code> and <code>styleField</code> config properties.</p>
+<p>This demonstration hides the in-field ‘clear’ and ‘expand’ buttons by setting the <code>renderFieldBtns</code> config to <code>false</code>.</p>
+<p>Try setting the value to <em>Canada</em>, <em>Italy</em>, <em>Austria</em>, <em>France</em> or <em>New Zealand</em></p>
+<div id="f3" class="demo"></div>
+<p>The following code was used to create this example:</p>
+<pre>
+      <code class="javascript">
+        var countryData = [
+          ['AU', 'Australia','x-flag-au','font-style:italic'],
+          ['AT', 'Austria', 'x-flag-at',''],
+          ['CA', 'Canada', 'x-flag-ca',''],
+          ['FR', 'France', 'x-flag-fr',''],
+          ['IT', 'Italy', 'x-flag-it',''],
+          ['JP', 'Japan', 'x-flag-jp',''],
+          ['NZ', 'New Zealand', 'x-flag-nz',''],
+          ['US', 'USA', 'x-flag-us','']
+        ];
+
+        var countryStore = new Ext.data.SimpleStore({
+          fields: ['code', 'name', 'cls', 'style'],
+          data: countryData,
+          sortInfo: {field: 'name', direction: 'ASC'}
+        });
+
+        new Ext.ux.form.SuperBoxSelect({
+            allowBlank:false,
+            msgTarget: 'side',
+            renderFieldBtns: false,
+            id:'selector3',
+            fieldLabel: 'Countries',
+            resizable: true,
+            name: 'countries',
+            anchor:'100%',
+            store: countryStore,
+            mode: 'local',
+            displayField: 'name',
+            valueField: 'code',
+            classField: 'cls',
+            styleField: 'style',
+            extraItemCls: 'x-flag',
+            extraItemStyle: 'border-width:2px',
+            stackItems: true,
+            value: 'AU'
+        })
+      </code>
+      <code class="css">
+        .x-flag{
+            background-image: url(https://cdnjs.cloudflare.com/ajax/libs/extjs/3.4.1-1/resources/images/default/s.gif);
+            background-repeat: no-repeat;
+            background-position:  2px center;
+            text-indent: 17px !important;
+        }
+
+        .x-flag-au{
+            background-image: url("flags/Australia.png");
+
+        }
+        .x-flag-at{
+            background-image: url("flags/Austria.png");
+        }
+        .x-flag-ca{
+            background-image: url("flags/Canada.png");
+        }
+        .x-flag-fr{
+            background-image: url("flags/France.png");
+        }
+        .x-flag-it{
+            background-image: url("flags/Italy.png");
+        }
+        .x-flag-jp{
+            background-image: url("flags/Japan.png");
+        }
+        .x-flag-nz{
+            background-image: url("flags/New Zealand.png");
+        }
+        .x-flag-us{
+            background-image: url("flags/USA.png");
+        }
+      </code>
+    </pre>
+
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
