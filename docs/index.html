@@ -134,13 +134,13 @@
               Ext.getCmp('selector1').setValue('AK,NY,CO');
             }
           },{
-            text: 'getValue()',
+            text: 'getValue() (console.log)',
             scope: this,
             handler: function(){
               console.log(Ext.getCmp('selector1').getValue());
             }
           }, {
-            text: 'BasicForm.getValues()',
+            text: 'BasicForm.getValues() (console.log)',
             scope: this,
             handler: function(){
               console.log(form1.getForm().getValues(true));
@@ -224,7 +224,7 @@
               Ext.getCmp('selector2').setValueEx([{id:'Finance', name:'Finance'},{id:'Gardening', name:'Gardening'}]);
             }
           },{
-            text: 'getValue()',
+            text: 'getValue() (console.log)',
             scope: this,
             handler: function(){
               console.log(Ext.getCmp('selector2').getValue());
@@ -290,13 +290,13 @@
               Ext.getCmp('selector3').addItem({code:'AU'});
             }
           },{
-            text: 'getValue()',
+            text: 'getValue() (console.log)',
             scope: this,
             handler: function(){
               console.log(Ext.getCmp('selector3').getValue());
             }
           }, {
-            text: 'BasicForm.getValues()',
+            text: 'BasicForm.getValues() (console.log)',
             scope: this,
             handler: function(){
               console.log(form3.getForm().getValues(true));
